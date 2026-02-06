@@ -284,7 +284,7 @@ Hooks.on("renderChatLog", async () => {
 	// if (!checkMobileWithOverride("send-button")) return;
 	const sendButton = $(`<button type="button" class="button send-button"><i class="fas fa-paper-plane"/></button>`);
 	sendButton.on("click", () => {
-		document?.querySelector("#chat-message")?.dispatchEvent(
+		document?.querySelector(".chat-message")?.dispatchEvent(
 			new KeyboardEvent("keydown", {
 				key: "Enter",
 				code: "Enter",
@@ -296,7 +296,7 @@ Hooks.on("renderChatLog", async () => {
 	} else {
 		const chatContainer = $(`<div id="mobile-chat-row" class="flexrow"></div>`);
 		chatContainer.appendTo("#chat-form");
-		$("#chat-message").appendTo(chatContainer);
+		$(".chat-message").appendTo(chatContainer);
 		sendButton.appendTo(chatContainer);
 	}
 	debug(false, "Add Send Button");
