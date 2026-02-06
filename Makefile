@@ -2,7 +2,6 @@
 .PHONY: clean default update refresh build
 .ONESHELL:
 
-DATA_PATH := $(shell node -e 'console.log(JSON.parse(require("fs").readFileSync("foundryconfig.json")).dataPath.join(" "));')
 PF2E_REPO_PATH := $(shell node -e 'console.log(JSON.parse(require("fs").readFileSync("foundryconfig.json")).pf2eRepoPath);')
 
 build:
@@ -17,11 +16,6 @@ watch:
 	yarn watch
 hot:
 	yarn hot
-install:
-	for f in ${DATA_PATH}
-	do
-		ln -s $$(pwd)/dist "$$f/modules/mobile-sheet"
-	done
 lint:
 	yarn lint
 lint_ts:
