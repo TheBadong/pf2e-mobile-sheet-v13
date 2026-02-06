@@ -54,20 +54,22 @@ Hooks.once("init", async () => {
 	// Register custom sheets (if any)
 });
 
-Hooks.on("getSceneControlButtons", (hudButtons: SceneControl[]) => {
-	for (const hud of hudButtons) {
-		const tool: SceneControlTool = {
+Hooks.on("getSceneControlButtons", (hudButtons: Record<string, foundry.applications.ui.SceneControls.Control>) => {
+	for (const [_, hud] of Object.entries(hudButtons)) {
+		const tool: foundry.applications.ui.SceneControls.Tool = {
 			name: "touch-pan",
 			title: "mobile-sheet.PanToggle",
 			icon: "fa-regular fa-arrows",
 			visible: true,
 			toggle: true,
-			onClick: async () => {
+			onChange: async () => {
 				info(true, tool.active);
 			},
+			order: 0,
 		};
 
-		hud?.tools?.push(tool);
+		const tools = hud?.tools;
+		if (tools) tools["touch-pan"] = tool;
 	}
 });
 
