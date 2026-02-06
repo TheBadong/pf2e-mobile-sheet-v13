@@ -1,14 +1,21 @@
-import { ShareTargetSettings, ShareTargetSettingsOptions } from "./types.js";
+import { ShareTargetSettings } from "./types.js";
 import { MODULE_ID, setBodyData, toggleRender } from "./utils.js";
 
-type OverrideSettings = {
-	off: `${typeof MODULE_ID}.settings.toggle.off`;
-	on: `${typeof MODULE_ID}.settings.toggle.on`;
-	auto: `${typeof MODULE_ID}.settings.toggle.auto`;
-};
+declare module "fvtt-types/configuration" {
+	interface SettingConfig {
+		"mobile-sheet.send-button": string;
+		"mobile-sheet.header-button-text": string;
+		"mobile-sheet.mobile-layout": string;
+		"mobile-sheet.mobile-windows": string;
+		"mobile-sheet.show-mobile-toggle": boolean;
+		"mobile-sheet.disable-canvas": boolean;
+		"mobile-sheet.show-player-list": boolean;
+		"mobile-sheet.mobile-share-targets": Array<ShareTargetSettings>;
+	}
+}
 
 export function registerSettings() {
-	game.settings.register(MODULE_ID, "send-button", {
+	game.settings?.register(MODULE_ID, "send-button", {
 		name: `${MODULE_ID}.settings.send-button.name`,
 		hint: `${MODULE_ID}.settings.send-button.hint`,
 		config: true,
@@ -21,8 +28,8 @@ export function registerSettings() {
 		},
 		default: "auto",
 		requiresReload: true,
-	} as SettingRegistration<OverrideSettings>);
-	game.settings.register(MODULE_ID, "header-button-text", {
+	});
+	game.settings?.register(MODULE_ID, "header-button-text", {
 		name: `${MODULE_ID}.settings.header-button-text.name`,
 		hint: `${MODULE_ID}.settings.header-button-text.hint`,
 		config: true,
@@ -36,8 +43,8 @@ export function registerSettings() {
 		default: "auto",
 		requiresReload: false,
 		onChange: (value) => setBodyData("force-hide-header-button-text", value),
-	} as SettingRegistration<OverrideSettings>);
-	game.settings.register(MODULE_ID, "mobile-layout", {
+	});
+	game.settings?.register(MODULE_ID, "mobile-layout", {
 		name: `${MODULE_ID}.settings.mobile-layout.name`,
 		hint: `${MODULE_ID}.settings.mobile-layout.hint`,
 		config: true,
@@ -51,8 +58,8 @@ export function registerSettings() {
 		default: "auto",
 		requiresReload: false,
 		onChange: (value) => setBodyData("force-mobile-layout", value),
-	} as SettingRegistration<OverrideSettings>);
-	game.settings.register(MODULE_ID, "mobile-windows", {
+	});
+	game.settings?.register(MODULE_ID, "mobile-windows", {
 		name: `${MODULE_ID}.settings.mobile-windows.name`,
 		hint: `${MODULE_ID}.settings.mobile-windows.hint`,
 		config: true,
@@ -73,8 +80,8 @@ export function registerSettings() {
 				setTimeout(() => $(win).css("width", `${width}px`), 10);
 			}
 		},
-	} as SettingRegistration<OverrideSettings>);
-	game.settings.register(MODULE_ID, "show-mobile-toggle", {
+	});
+	game.settings?.register(MODULE_ID, "show-mobile-toggle", {
 		name: `${MODULE_ID}.settings.show-mobile-toggle.name`,
 		hint: `${MODULE_ID}.settings.show-mobile-toggle.hint`,
 		config: true,
@@ -85,8 +92,8 @@ export function registerSettings() {
 		onChange: (value: boolean) => {
 			setBodyData("show-mobile-toggle", value);
 		},
-	} as SettingRegistration<undefined>);
-	game.settings.register(MODULE_ID, "disable-canvas", {
+	});
+	game.settings?.register(MODULE_ID, "disable-canvas", {
 		name: `${MODULE_ID}.settings.disable-canvas.name`,
 		hint: `${MODULE_ID}.settings.disable-canvas.hint`,
 		config: true,
@@ -98,8 +105,8 @@ export function registerSettings() {
 			toggleRender(!value);
 			setBodyData("disable-canvas", value);
 		},
-	} as SettingRegistration<undefined>);
-	game.settings.register(MODULE_ID, "show-player-list", {
+	});
+	game.settings?.register(MODULE_ID, "show-player-list", {
 		config: false,
 		scope: "client",
 		type: Boolean,
@@ -108,15 +115,15 @@ export function registerSettings() {
 		onChange: (value: boolean) => {
 			setBodyData("hide-player-list", !value);
 		},
-	} as SettingRegistration<undefined>);
-	game.settings.register(MODULE_ID, "mobile-share-targets", {
+	});
+	game.settings?.register(MODULE_ID, "mobile-share-targets", {
 		scope: "world",
 		config: false,
 		type: Array<ShareTargetSettings>,
 		default: [],
 		requiresReload: false,
-	} as SettingRegistration<undefined>);
-	game.settings.registerMenu(MODULE_ID, "mobile-share-targets-settings", {
+	});
+	game.settings?.registerMenu(MODULE_ID, "mobile-share-targets-settings", {
 		name: `${MODULE_ID}.settings.mobile-share-targets.name`,
 		hint: `${MODULE_ID}.settings.mobile-share-targets.hint`,
 		label: `${MODULE_ID}.settings.mobile-share-targets.name`,
@@ -148,28 +155,26 @@ export class EnableShareReceiveTargets extends FormApplication {
 	 * Provide data to the template
 	 */
 	override getData() {
-		const users = game.users.contents;
-		const settings = game.settings.get(MODULE_ID, "mobile-share-targets");
-		const data = [] as Partial<FormApplicationOptions>[];
+		const users = game.data?.users;
+		const settings = game.settings?.get(MODULE_ID, "mobile-share-targets");
+		const data = [] as (ShareTargetSettings & { name: string })[];
 
-		for (let i = 0; i < users.length; i++) {
-			const userData = users[i];
-
-			const userSettings = settings.find((u) => u.id === userData.id);
+		users?.forEach((user) => {
+			const userSettings = settings?.find((u) => u.id === user._id);
 
 			const dataNew: ShareTargetSettings & { name: string } = {
-				id: userData.id,
+				id: user._id as string,
 				send: userSettings?.send ? userSettings.send : false,
 				receive: userSettings?.receive ? userSettings.receive : false,
-				name: userData.name,
+				name: user.name,
 				force: userSettings?.force ? userSettings.force : false,
 			};
 			data.push(dataNew);
-		}
+		});
 
 		return {
 			data,
-		} as FormApplicationData<ShareTargetSettingsOptions>;
+		};
 	}
 
 	protected override async _updateObject(_event: Event, data: Record<string, unknown>): Promise<void> {
@@ -182,6 +187,6 @@ export class EnableShareReceiveTargets extends FormApplication {
 				force: data[`force-${id}`],
 			});
 		}
-		await game.settings.set(MODULE_ID, "mobile-share-targets", newData);
+		await game.settings?.set(MODULE_ID, "mobile-share-targets", newData);
 	}
 }
