@@ -10,6 +10,11 @@
 @import "mobile-messages";
 @import "systems";
 
+// TODO: Not sure what this breaks eaxcatly, but pretty sure it breaks something. Check later
+#ui-right-column-1 {
+	display: none;
+}
+
 [data-mobile-force-hide-header-button-text="true"] {
 	a:is(.pf2e-item-revitalizer-initiate-single-actor, .pathmuncher-open, .header-button.control) {
 		font-size: 0;
@@ -21,7 +26,10 @@
 }
 
 @include mixins.hide-hud {
-	#ui-center, #ui-left, #ui-middle, #fps {
+	#ui-center,
+	#ui-left,
+	#ui-middle,
+	#fps {
 		display: none !important;
 	}
 
@@ -80,7 +88,7 @@
 		margin: 0;
 
 		&.window-app {
-			&:not(.minimized,.dialog,.simple-calendar, .sidebar-popout) {
+			&:not(.minimized, .dialog, .simple-calendar, .sidebar-popout) {
 				height: var(--view-height) !important;
 				left: 0 !important;
 				top: 0 !important;
@@ -96,7 +104,16 @@
 		}
 	}
 
-	.sheet.actor.character .popout-module-button, .pathmuncher-open, .configure-token, .configure-creature, .configure-theatre, .console-print, .document-id-link, .document-image-link, #tokenbar, .header-button.control.pf2e-action-support-engine {
+	.sheet.actor.character .popout-module-button,
+	.pathmuncher-open,
+	.configure-token,
+	.configure-creature,
+	.configure-theatre,
+	.console-print,
+	.document-id-link,
+	.document-image-link,
+	#tokenbar,
+	.header-button.control.pf2e-action-support-engine {
 		display: none !important;
 	}
 
@@ -127,7 +144,9 @@
 }
 
 @include mixins.tab("app") {
-	#ui-left, #ui-middle, #ui-bottom {
+	#ui-left,
+	#ui-middle,
+	#ui-bottom {
 		display: none;
 	}
 
@@ -140,7 +159,8 @@
 	}
 
 	@include mixins.global-tablet {
-		#ui-left, #ui-middle {
+		#ui-left,
+		#ui-middle {
 			display: flex !important;
 		}
 
@@ -148,7 +168,6 @@
 			display: unset !important;
 		}
 	}
-
 }
 
 @include mixins.tab("map") {
@@ -189,7 +208,6 @@
 	}
 }
 
-
 /* #navigation .monks-scene-navigation {
 	.scene-list {
 		flex-wrap: wrap;
@@ -199,7 +217,6 @@
 		}
 	}
 } */
-
 
 @include mixins.body-data-tag("[data-mobile-disable-canvas=true]") {
 	canvas#board {

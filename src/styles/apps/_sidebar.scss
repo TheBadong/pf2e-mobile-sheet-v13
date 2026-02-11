@@ -1,6 +1,5 @@
 @use "../mixins";
 
-
 @include mixins.hide-hud {
 	#sidebar {
 		display: none !important;
@@ -35,6 +34,7 @@
 		}
 
 		#sidebar-tabs {
+			min-width: 100vw;
 			font-size: 2em;
 
 			> .collapse {
@@ -45,7 +45,12 @@
 				flex-basis: 2em !important;
 				height: 2em !important;
 			}
+
+			menu {
+				flex-direction: row;
+				flex: 0 0 100%;
+				justify-content: space-around;
+			}
 		}
 	}
 }
-
