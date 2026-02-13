@@ -25,9 +25,11 @@ Hooks.once("devModeReady", async ({ registerPackageDebugFlag }: DevModeApi) => {
 // Initialize module
 Hooks.once("init", async () => {
 	info(true, "Initializing " + MODULE_ID);
-	info(true, game.data?.modules);
-	info(true, "Settings", game.data?.settings);
+	info(true, game.modules);
+	info(true, "game.settings", game.settings);
+	info(true, "game.data.settings", game.data?.settings);
 	info(true, "Users data", game.data?.users);
+	info(true, "current user", game.user);
 
 	// Assign custom classes and constants here
 	windowMgr.activate();
@@ -46,17 +48,17 @@ Hooks.once("init", async () => {
 	});
 
 	//TODO: Check by installing this theme
-	Hooks.on("getTaskbarButtons", () => {
-		if (game.data?.modules["pf2e-dorako-ui"]?.active) {
-			const pf2eDorakoUiSettings = game.settings?.find((s) => s.key === "pf2e.dorako-ui");
-			if (pf2eDorakoUiSettings) {
-				$("div#taskbar.taskbar, .taskbar-workspaces").attr(
-					"data-theme",
-					pf2eDorakoUiSettings["theme.app-theme"] as string,
-				);
-			}
-		}
-	});
+	// Hooks.on("getTaskbarButtons", () => {
+	// 	if (game.modules?.get("pf2e-dorako-ui")?.active) {
+	// 		const pf2eDorakoUiSettings = game.settings?.get("pf2e-dorako-ui", "theme.app-theme");
+	// 		if (pf2eDorakoUiSettings) {
+	// 			$("div#taskbar.taskbar, .taskbar-workspaces").attr(
+	// 				"data-theme",
+	// 				pf2eDorakoUiSettings["theme.app-theme"] as string,
+	// 			);
+	// 		}
+	// 	}
+	// });
 
 	// Register custom sheets (if any)
 });
@@ -83,20 +85,22 @@ Hooks.on("getSceneControlButtons", (hudButtons: Record<string, foundry.applicati
 Hooks.on("targetToken", (user: User.Implementation, token: Token.Implementation, targeted: boolean) => {
 	if (user.id === game.user?.id) return;
 	const targetSettings = game.settings?.get(MODULE_ID, "mobile-share-targets");
-	const targettingUser = targetSettings.find((v) => v.id === user.id);
-	const currentUser = targetSettings.find((v) => v.id === game.user.id);
+	const targettingUser = targetSettings?.find((v) => v.id === user.id);
+	const currentUser = targetSettings?.find((v) => v.id === game.user?.id);
 	if (!targettingUser || !currentUser) return;
 	if (!targettingUser.send) return;
 	if (!currentUser.receive) return;
 	token.setTarget(targeted, { releaseOthers: currentUser.force });
 });
 
-Hooks.on("drawMeasuredTemplate", async () => {
-	if (!game.joyManager) return;
-});
+//TODO: What thE FUCK is joyManager
+// Hooks.on("drawMeasuredTemplate", async () => {
+// 	if (!game.joyManager) return;
+// });
 
 Hooks.once("ready", async () => {
-	if (!game.data?.modules?.get("lib-wrapper")?.active && game.user.isGM)
+	info(true, "module ready");
+	if (!game.modules?.get("lib-wrapper")?.active && game.user?.isGM)
 		ui.notifications.error(
 			"Module Pf2e Mobile Sheet requires the 'libWrapper' module. Please install and activate it.",
 		);
@@ -115,7 +119,12 @@ Hooks.once("ready", async () => {
 	MobileMode.navigation.render(true);
 	MobileMode.viewResize();
 
-	const button = $(await renderTemplate(`modules/${MODULE_ID}/templates/mobileToggleButton.hbs`));
+	const button = $(
+		await foundry.applications.handlebars.renderTemplate(
+			`modules/${MODULE_ID}/templates/mobileToggleButton.hbs`,
+			{},
+		),
+	);
 	button.on("click", () => {
 		game.settings?.set(MODULE_ID, "mobile-layout", "on");
 	});
@@ -202,7 +211,7 @@ Hooks.once("ready", async () => {
 		},
 	);
 
-	if (!game.data?.modules?.get("zoom-pan-options")?.active) {
+	if (!game.modules?.get("zoom-pan-options")?.active) {
 		libWrapper.register<Canvas, typeof Canvas.prototype._onDragCanvasPan>(
 			MODULE_ID,
 			"Canvas.prototype._onDragCanvasPan",
@@ -244,8 +253,8 @@ Hooks.once("ready", async () => {
 	}
 
 	if (!checkMobile()) return;
-	if (game.data?.modules?.get("pathfinder-ui")?.active) body.addClass("pf2e-ui");
-	if (game.data?.modules?.get("_chatcommands")?.active) body.addClass("chatcommander-active");
+	if (game.modules?.get("pathfinder-ui")?.active) body.addClass("pf2e-ui");
+	if (game.modules?.get("_chatcommands")?.active) body.addClass("chatcommander-active");
 	// $(".taskbar-workspaces, .taskbar-docking-container, .taskbar, .simple-calendar").remove();
 	// $("tokenbar").remove();
 	// $("canvas#board").remove();
@@ -290,6 +299,9 @@ Hooks.on("renderApplication", async (app: Application) => {
 });
 
 Hooks.on("renderChatLog", async () => {
+	logger.debug("test logger");
+	console.debug("test console");
+	debug(true, "debug debug");
 	// if (!checkMobileWithOverride("send-button")) return;
 	const sendButton = $(`<button type="button" class="button send-button"><i class="fas fa-paper-plane"/></button>`);
 	sendButton.on("click", () => {
@@ -300,7 +312,7 @@ Hooks.on("renderChatLog", async () => {
 			}),
 		);
 	});
-	if (game.data?.modules?.get("_chatcommands")?.active) {
+	if (game.modules?.get("_chatcommands")?.active) {
 		sendButton.appendTo("#chat-form");
 	} else {
 		const chatContainer = $(`<div id="mobile-chat-row" class="flexrow"></div>`);
