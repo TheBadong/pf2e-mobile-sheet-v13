@@ -7,6 +7,7 @@
 @import "sidebar";
 @import "dialogs";
 @import "sheets";
+@import "sidebar-items";
 
 @include mixins.global-mobile {
 	.app.minimized {
