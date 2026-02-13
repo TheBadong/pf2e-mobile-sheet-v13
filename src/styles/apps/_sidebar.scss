@@ -21,6 +21,7 @@
 	#ui-right > #sidebar {
 		background: rgb(0 0 0 / 80%);
 		height: var(--view-height);
+		flex-direction: column;
 		margin: 0;
 		padding: 0;
 		width: 100%;
@@ -31,6 +32,10 @@
 			#sidebar-tabs .item {
 				display: none;
 			}
+		}
+
+		#sidebar-content {
+			flex: 1;
 		}
 
 		#sidebar-tabs {
