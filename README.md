@@ -1,3 +1,10 @@
+# Why this fork?
+
+The original module seems abandoned, and does not work with FoundryVTT 13.
+This is a tentative fork to try and fix the base features.
+
+I am by no means an experienced FoundryVTT developer, feel free to submit a PR I'll be happy to merge improvements.
+
 # pf2e-mobile-sheet
 
 Make the PF2e Player Character sheet work on mobile
@@ -45,7 +52,9 @@ You also need to install the project's dependencies. To do so, run
 ```sh
 yarn install
 ```
+
 or
+
 ```sh
 make install
 ```
@@ -57,7 +66,9 @@ You can build the project by running
 ```sh
 yarn build
 ```
+
 or
+
 ```sh
 make
 ```
@@ -67,7 +78,9 @@ Alternatively, you can run
 ```sh
 yarn build:dev
 ```
+
 or
+
 ```sh
 make build_dev
 ```
@@ -83,7 +96,7 @@ with the following content:
 
 ```json
 {
-  "dataPath": ["/absolute/path/to/your/FoundryVTT"]
+	"dataPath": ["/absolute/path/to/your/FoundryVTT"]
 }
 ```
 
@@ -95,7 +108,9 @@ Then run
 ```sh
 yarn link
 ```
+
 or
+
 ```sh
 make install
 ```
@@ -108,19 +123,25 @@ You can also link to multiple data folders by specifying multiple paths in the
 `dataPath` array.
 
 ### Regenerate types
+
 Usually, the types included in this repo are already the up to date types. If you still want to generate up to date types,
 first add an entry to the `foundryconfig.json` file:
+
 ```json
 {
 	"dataPath": "/absolute/path/to/your/FoundryVTT/Data",
 	"pf2eRepoPath": "path/to/pf2e/system/repo"
 }
 ```
+
 Next, run
+
 ```sh
 make reposetup_types
 ```
+
 to set up everything for the first time, and to update your types again later, run
+
 ```sh
 make default_types
 ```
@@ -140,25 +161,24 @@ This project is licensed under [GPL-3.0-or-later](COPYING.md).
 The contents of many files are originally from
 the Mobile Improvements module under MIT License.
 
-- [`static/templates/menu.hbs`](static/templates/menu.hbs)
-- [`static/templates/navigation.hbs`](static/templates/navigation.hbs)
-- [`static/templates/window-selector.hbs`](static/templates/window-selector.hbs)
-- [`static/templates/window-selector.hbs`](static/templates/mobileToggleButton.hbs)
-- [`src/stykes/apps/_mobile-navigation.scss`](src/styles/apps/_mobile-navigation.scss)
+-   [`static/templates/menu.hbs`](static/templates/menu.hbs)
+-   [`static/templates/navigation.hbs`](static/templates/navigation.hbs)
+-   [`static/templates/window-selector.hbs`](static/templates/window-selector.hbs)
+-   [`static/templates/window-selector.hbs`](static/templates/mobileToggleButton.hbs)
+-   [`src/stykes/apps/_mobile-navigation.scss`](src/styles/apps/_mobile-navigation.scss)
 
 build-packs license:
 
-* The build-packs.ts script has taken from https://github.com/xdy/xdy-pf2e-workbench/blob/main/build/build-packs.ts and is, like the original,
-  provided under the [ISC license](https://www.isc.org/licenses/)
+-   The build-packs.ts script has taken from https://github.com/xdy/xdy-pf2e-workbench/blob/main/build/build-packs.ts and is, like the original,
+    provided under the [ISC license](https://www.isc.org/licenses/)
 
 project layout:
 
-- The Project layout has been copied over from https://github.com/xdy/xdy-pf2e-workbench and is licensed under the [Apache License](https://www.apache.org/licenses/LICENSE-2.0)
+-   The Project layout has been copied over from https://github.com/xdy/xdy-pf2e-workbench and is licensed under the [Apache License](https://www.apache.org/licenses/LICENSE-2.0)
 
 [League Basic JS Module Template]: https://github.com/League-of-Foundry-Developers/FoundryVTT-Module-Template
 [LIMITED LICENSE AGREEMENT FOR MODULE DEVELOPMENT]: https://foundryvtt.com/article/license/
 [Choose an open source license]: https://choosealicense.com/
-
 [1]: https://img.shields.io/github/downloads/OmegaRogue/pf2e-mobile-sheet/latest/module.zip
 [2]: https://img.shields.io/badge/dynamic/json?label=Forge%20Installs&query=package.installs&suffix=%25&url=https%3A%2F%2Fforge-vtt.com%2Fapi%2Fbazaar%2Fpackage%2Fpf2e-mobile-sheet&colorB=4aa94a
 [3]: https://forge-vtt.com/bazaar#package=pf2e-mobile-sheet
