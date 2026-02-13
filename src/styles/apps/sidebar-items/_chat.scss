@@ -1,0 +1,23 @@
+@include mixins.global-mobile {
+	#chat {
+		.chat-scroll {
+			.chat-log {
+				max-width: unset !important;
+				color: beige;
+			}
+		}
+		.chat-form {
+			width: 100%;
+
+			#chat-controls > #roll-privacy {
+				display: flex;
+				justify-content: space-around;
+				width: 100%;
+
+				button {
+					width: 25%;
+				}
+			}
+		}
+	}
+}

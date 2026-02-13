@@ -1,5 +1,6 @@
 {
 	"compilerOptions": {
+		"strict": true,
 		"allowSyntheticDefaultImports": true,
 		//Do I need this?
 		"allowImportingTsExtensions": true,
@@ -8,8 +9,8 @@
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
 		"lib": ["dom", "dom.iterable", "esnext"],
-		"module": "NodeNext",
-		"moduleResolution": "nodenext",
+		"module": "esnext",
+		"moduleResolution": "bundler",
 		"noEmit": true,
 		"noFallthroughCasesInSwitch": true,
 		"noImplicitOverride": true,
@@ -45,15 +46,8 @@
 		"strictFunctionTypes": false,
 		"strictNullChecks": true,
 		"strictPropertyInitialization": true,
-		"target": "es2022",
-		"typeRoots": [
-			"node_modules/@types",
-			"types/types/foundry",
-			"types/types/dev-mode",
-			"types/types/libWrapper",
-			"types/types/socketlib"
-		],
-		"types": ["jquery", "node", "tooltipster"],
+		"target": "esnext",
+		"types": ["jquery", "node", "tooltipster", "fvtt-types"],
 		"useDefineForClassFields": true,
 		"noErrorTruncation": true
 		//		"allowJs": true

@@ -43,7 +43,7 @@ $invalid-selector: selector.parse(".fgarhzjgfklaherlkjghaerlkghalekrjfgliurae");
 		@each $sel in $parent {
 			$new: selector.unify(list.nth($sel, 1), "body" + $add);
 
-			@if string.index(list.nth($sel, 1), ":not(" + list.nth(string.split($add, "="),1)) {
+			@if string.index(list.nth($sel, 1), ":not(" + list.nth(string.split($add, "="), 1)) {
 				$new: $invalid-selector;
 			}
 
@@ -97,7 +97,6 @@ $invalid-selector: selector.parse(".fgarhzjgfklaherlkjghaerlkghalekrjfgliurae");
 				@content;
 			}
 		}
-
 	} @else if $mode == "tablet" {
 		$selector: add-body-data($parent, "[data-mobile-force-mobile-layout=true]");
 
@@ -110,7 +109,6 @@ $invalid-selector: selector.parse(".fgarhzjgfklaherlkjghaerlkghalekrjfgliurae");
 		}
 	}
 }
-
 
 @mixin global-mobile {
 	@include layout("mobile") {
@@ -132,7 +130,7 @@ $invalid-selector: selector.parse(".fgarhzjgfklaherlkjghaerlkghalekrjfgliurae");
 
 @mixin tab($tab) {
 	@include global-mobile {
-		&[data-mobile-tab=#{$tab}] {
+		&[data-mobile-tab="#{$tab}"] {
 			--tab: "#{$tab}";
 			@content;
 		}
@@ -184,7 +182,6 @@ $invalid-selector: selector.parse(".fgarhzjgfklaherlkjghaerlkghalekrjfgliurae");
 	transition: transform 100ms ease-out;
 }
 
-
 @mixin glass {
 	& {
 		border: none;
@@ -198,9 +195,15 @@ $invalid-selector: selector.parse(".fgarhzjgfklaherlkjghaerlkghalekrjfgliurae");
 @mixin quick-transition {
 	$transition-time: 0.15s;
 
-	transition: text-shadow $transition-time ease-in-out, background-color $transition-time ease-in-out,
-	border $transition-time ease-in-out, color $transition-time ease-in-out, box-shadow $transition-time ease-in-out,
-	backdrop-filter $transition-time ease-in-out, border-radius $transition-time, outline $transition-time;
+	transition:
+		text-shadow $transition-time ease-in-out,
+		background-color $transition-time ease-in-out,
+		border $transition-time ease-in-out,
+		color $transition-time ease-in-out,
+		box-shadow $transition-time ease-in-out,
+		backdrop-filter $transition-time ease-in-out,
+		border-radius $transition-time,
+		outline $transition-time;
 }
 
 @mixin gold-border {
