@@ -1,6 +1,6 @@
 import { WindowMenu } from "./windowMenu.js";
 import { MobileMenu } from "./mobileMenu.js";
-import { checkMobile, MODULE_ID, setBodyData, toggleRender } from "../utils.js";
+import { checkMobile, info, MODULE_ID, setBodyData, toggleRender } from "../utils.js";
 
 export enum ViewState {
 	Unloaded,
@@ -63,8 +63,8 @@ export class MobileUI extends Application {
 		setBodyData("windows-open", false);
 	}
 
-	override render(force?: boolean, options?: RenderOptions): this {
-		this.noCanvas = game.settings.get(MODULE_ID, "disable-canvas") as boolean;
+	override render(force?: boolean, options?: Application.RenderOptions): this {
+		this.noCanvas = game.settings?.get(MODULE_ID, "disable-canvas") as boolean;
 		if (this.state === ViewState.Unloaded) this.state = this.noCanvas ? ViewState.App : ViewState.Map;
 		const r = super.render(force, options);
 		this.windowMenu.render(force);
@@ -122,19 +122,20 @@ export class MobileUI extends Application {
 		setBodyData("hotbar", "false");
 	}
 
-	showStartMenu(): void {
-		if ($(".start-menu-options .start-menu-option.canvas").length === 0) {
-			(async () => {
-				$(
-					await renderTemplate(
-						`modules/${MODULE_ID}/templates/taskbarStartMenuAdditions.hbs`,
-						this.mobileMenu.getData().filter((value) => value.name !== "reload"),
-					),
-				).appendTo(".start-menu-options");
-			})().then();
-		}
-		$("div#start-menu.start-menu").addClass("active");
-	}
+	//TODO: Cannot find a reference to this. Check later.
+	// showStartMenu(): void {
+	// 	if ($(".start-menu-	options .start-menu-option.canvas").length === 0) {
+	// 		(async () => {
+	// 			$(
+	// 				await foundry.applications.handlebars.renderTemplate(
+	// 					`modules/${MODULE_ID}/templates/taskbarStartMenuAdditions.hbs`,
+	// 					this.mobileMenu.getData().filter((value) => value.name !== "reload"),
+	// 				),
+	// 			).appendTo(".start-menu-options");
+	// 		})().then();
+	// 	}
+	// 	$("div#start-menu.start-menu").addClass("active");
+	// }
 
 	hideStartMenu(): void {
 		$("div#start-menu.start-menu").removeClass("active");
@@ -164,10 +165,12 @@ export class MobileUI extends Application {
 		}
 
 		this.drawerState = state;
+		info(true, "drawerState", state);
 		if (state === DrawerState.Macros) {
 			this.showHotbar();
 		} else if (state === DrawerState.Start) {
-			this.showStartMenu();
+			//TODO: Cannot find a reference to this. Check later.
+			// 	this.showStartMenu();
 		} else {
 			$(`body > .drawer.drawer-${state}`).addClass("open");
 		}
@@ -220,8 +223,8 @@ export class MobileUI extends Application {
 			},
 		];
 		if (
-			(game.modules.get("foundry-taskbar")?.active ?? false) &&
-			(game.user.isGM || game.settings.get("foundry-taskbar", "enableplayers"))
+			(game.modules?.get("foundry-taskbar")?.active ?? false) &&
+			(game.user?.isGM || game.settings?.get("foundry-taskbar", "enableplayers"))
 		) {
 			data.unshift({ name: "start", icon: "fa-bars", drawer: true });
 			data = data.filter((value) => value.name !== "menu");

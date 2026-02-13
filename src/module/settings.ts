@@ -1,6 +1,7 @@
 import { ShareTargetSettings } from "./types.js";
 import { MODULE_ID, setBodyData, toggleRender } from "./utils.js";
 
+// Override for custom configurations
 declare module "fvtt-types/configuration" {
 	interface SettingConfig {
 		"mobile-sheet.send-button": string;
@@ -11,6 +12,9 @@ declare module "fvtt-types/configuration" {
 		"mobile-sheet.disable-canvas": boolean;
 		"mobile-sheet.show-player-list": boolean;
 		"mobile-sheet.mobile-share-targets": Array<ShareTargetSettings>;
+		// Third party theme module
+		"pf2e-dorako-ui.theme.app-theme": unknown;
+		"foundry-taskbar.enableplayers": boolean;
 	}
 }
 
