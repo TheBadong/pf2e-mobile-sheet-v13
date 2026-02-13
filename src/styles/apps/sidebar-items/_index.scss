@@ -1,1 +1,7 @@
 @import "chat";
+
+#sidebar-content {
+	& > section {
+		width: 100%;
+	}
+}
